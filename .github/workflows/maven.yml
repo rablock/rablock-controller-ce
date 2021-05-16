@@ -12,14 +12,28 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        jdk-version: [11]
+        mongodb-version: [3.6]
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 11
+
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.4.0
+      with:
+        mongodb-version: ${{ matrix.mongodb-version }}
+        mongodb-port: 53579
+
+    - name: Prepare DB
+      run: 'mongo mongodb://localhost:53579/bcdb mongo-init.d/init.js'
+
+    - name: Set up JDK ${{ matrix.jdk-version }}
       uses: actions/setup-java@v1
       with:
-        java-version: 11
+        java-version: ${{ matrix.jdk-version }}
+
     - name: Build with Maven
-      run: mvn -B package --file pom.xml -Dmaven.test.skip=true
+      run: mvn -B package --file pom.xml
