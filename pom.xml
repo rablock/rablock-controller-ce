@@ -71,11 +71,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
             <exclusions>
                 <exclusion>
                     <artifactId>android-json</artifactId>
@@ -90,7 +85,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>${artifactId}-${timestamp}</finalName>
+        <finalName>${project.artifactId}-${timestamp}</finalName>
       <pluginManagement>
         <plugins>
             <plugin>
