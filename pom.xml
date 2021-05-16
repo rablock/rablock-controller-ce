@@ -150,7 +150,6 @@
                 <version>2.5</version>
                 <configuration>
                     <skipTests>false</skipTests>
-                    <testFailureIgnore>true</testFailureIgnore>
                     <forkMode>once</forkMode>
                 </configuration>
             </plugin>
