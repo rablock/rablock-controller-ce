@@ -1,0 +1,39 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        jdk-version: [11]
+        mongodb-version: [3.6]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.4.0
+      with:
+        mongodb-version: ${{ matrix.mongodb-version }}
+        mongodb-port: 53579
+
+    - name: Prepare DB
+      run: 'mongo mongodb://localhost:53579/bcdb mongo-init.d/init.js'
+
+    - name: Set up JDK ${{ matrix.jdk-version }}
+      uses: actions/setup-java@v1
+      with:
+        java-version: ${{ matrix.jdk-version }}
+
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
